@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Morrow | A café in London</title>
+    <meta name="description" content="Morrow is a fictional London café, created as a concept by Trizen Technologies." />
+    <meta name="theme-color" content="#0e1014" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="preload" as="image" href="media/hero/rest-0.webp" />
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#menu" data-skip>Skip to the menu</a>
+
+    <div class="intro" data-intro aria-hidden="true">
+      <p class="intro__word" data-intro-word>MORROW</p>
+      <p class="intro__note">A café in London</p>
+      <span class="intro__bar"><i data-intro-bar></i></span>
+    </div>
+
+    <header class="nav" data-nav data-tone="light">
+      <nav class="nav__links" aria-label="Main">
+        <a href="#menu" data-go>Menu</a>
+        <a href="#room" data-go>The Room</a>
+        <a href="#visit" data-go>Visit</a>
+      </nav>
+      <a class="nav__logo" href="#top" data-home aria-label="Morrow, back to the start">MORROW</a>
+      <a class="nav__book" href="#reserve" data-go data-magnetic><span>Book a table</span></a>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" data-hero aria-label="Arriving at Morrow">
+        <div class="hero__stage" data-stage>
+          <div class="hero__frame" data-frame>
+            <img class="hero__poster" data-poster src="media/hero/rest-0.webp" alt="" />
+            <div class="hero__videos" data-videos></div>
+            <div class="hero__space" data-space>
+              <div class="ink" data-ink></div>
+              <div class="hero__turn" data-turn></div>
+            </div>
+          </div>
+
+          <canvas class="fx fx--rain" data-rain aria-hidden="true"></canvas>
+          <canvas class="fx fx--motes" data-motes aria-hidden="true"></canvas>
+          <div class="fx fx--mist" data-mist aria-hidden="true"><i></i><i></i><b></b></div>
+          <div class="fx fx--flare" data-flare aria-hidden="true"><i></i><b></b></div>
+          <div class="fx fx--shade" data-shade aria-hidden="true"></div>
+          <div class="fx fx--vignette" aria-hidden="true"></div>
+
+          <div class="hero__copy" data-copy aria-live="polite"></div>
+
+          <div class="card" data-card aria-hidden="true">
+            <div class="card__book" data-card-book>
+              <div class="card__page">
+                <h3>Bakes</h3>
+                <ul>
+                  <li><span>Cardamom bun</span><em>3.80</em></li>
+                  <li><span>Almond croissant</span><em>3.90</em></li>
+                </ul>
+                <h3>All day</h3>
+                <ul>
+                  <li><span>Eggs on sourdough, brown butter</span><em>9.50</em></li>
+                  <li><span>Bacon bap, house ketchup</span><em>8.00</em></li>
+                  <li><span>Soup of the evening</span><em>7.50</em></li>
+                </ul>
+                <p class="card__sign">Until the morrow.</p>
+              </div>
+              <div class="card__cover" data-card-cover>
+                <div class="card__front">
+                  <span class="card__mark" data-card-mark>MORROW</span>
+                  <span class="card__sub" data-card-mark>Evening menu</span>
+                </div>
+                <div class="card__page card__back">
+                  <p class="label">This evening</p>
+                  <h3>Coffee</h3>
+                  <ul>
+                    <li><span>Flat white</span><em>3.60</em></li>
+                    <li><span>Cortado</span><em>3.40</em></li>
+                    <li><span>Filter, Kenya Gichathaini</span><em>4.20</em></li>
+                    <li><span>Cardamom latte</span><em>4.10</em></li>
+                  </ul>
+                  <h3>Tea &amp; chai</h3>
+                  <ul>
+                    <li><span>Masala chai, made in the pan</span><em>3.80</em></li>
+                    <li><span>Earl Grey, loose leaf</span><em>3.20</em></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="card__actions" data-card-actions>
+              <a class="button button--light" href="#menu" data-release="#menu" data-magnetic><span>See the full menu</span></a>
+              <a class="link link--light" href="#reserve" data-release="#reserve">Book a table</a>
+            </div>
+          </div>
+
+          <div class="hero__ui">
+            <div class="hero__count" aria-hidden="true"><span data-count>01</span><i></i><span data-total>09</span></div>
+            <button class="hero__cue" type="button" data-next><span>Scroll</span><i></i></button>
+            <button class="hero__skip" type="button" data-skip-hero>Skip to the menu</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="menu" id="menu" data-tone="dark" aria-labelledby="menu-title">
+        <div class="menu__head">
+          <p class="label">The menu</p>
+          <h2 class="menu__title" id="menu-title" data-rise>Small plates,<br /><em>long evenings.</em></h2>
+          <p class="menu__intro" data-fade>Coffee roasted four streets away, bakes from six each morning, and a few warm things to eat until late.</p>
+        </div>
+
+        <div class="menu__bar" data-fade>
+          <div class="menu__tabs" role="tablist" aria-label="Menu sections" data-tabs></div>
+          <div class="menu__avoid">
+            <p class="label">I'm avoiding</p>
+            <div class="menu__chips" data-chips></div>
+          </div>
+        </div>
+
+        <div class="menu__list" data-menu-list></div>
+        <p class="menu__note">Prices in pounds and include VAT. Every dish lists the 14 major allergens it contains; please tell us about any allergy before you order.</p>
+      </section>
+
+      <section class="room" id="room" data-tone="light" aria-labelledby="room-title">
+        <div class="room__media" data-room-media>
+          <img src="media/stills/m2-interior.webp" srcset="media/stills/m2-interior-sm.webp 900w, media/stills/m2-interior.webp 1536w" sizes="100vw" alt="Inside Morrow in the evening: a marble counter, brass lamps and rain on the tall windows" width="1536" height="1024" loading="lazy" data-parallax="8" />
+        </div>
+        <div class="room__text">
+          <p class="label" data-fade>The room</p>
+          <h2 class="room__title" id="room-title" data-rise>Built for<br /><em>rainy evenings.</em></h2>
+          <p class="room__body" data-fade>One long marble counter, a dozen small tables, lamps that stay on until the last cup. We opened on this corner in 2014 with one machine and a borrowed oven, and we still bake everything here.</p>
+          <dl class="room__facts" data-fade>
+            <div><dt>Seats</dt><dd>48, and the window</dd></div>
+            <div><dt>Dogs</dt><dd>Welcome, with a biscuit</dd></div>
+            <div><dt>Wi‑Fi</dt><dd>Until 6pm, then conversation</dd></div>
+          </dl>
+        </div>
+        <figure class="room__detail" data-fade>
+          <img src="media/stills/m3-detail.webp" srcset="media/stills/m3-detail-sm.webp 900w, media/stills/m3-detail.webp 1536w" sizes="(min-width: 900px) 34vw, 80vw" alt="A flat white and a cardamom bun on a marble table beside a rainy window" width="1536" height="1024" loading="lazy" />
+          <figcaption>Flat white and a cardamom bun, £7.40</figcaption>
+        </figure>
+      </section>
+
+      <section class="reserve" id="reserve" data-tone="dark" aria-labelledby="reserve-title">
+        <div class="reserve__book" data-reserve-book>
+          <img src="media/stills/07-book.webp" srcset="media/stills/07-book-sm.webp 900w, media/stills/07-book.webp 1536w" sizes="(min-width: 900px) 56vw, 100vw" alt="The host's hands rest on Morrow's open reservation book" width="1536" height="1024" loading="lazy" />
+          <div class="ink" data-reserve-ink></div>
+        </div>
+        <form class="reserve__form" data-reserve-form novalidate>
+          <p class="label">Reservations</p>
+          <h2 class="reserve__title" id="reserve-title" data-rise>We'll write<br /><em>you in.</em></h2>
+          <label class="field"><span>Your name</span><input name="name" autocomplete="name" placeholder="Eleanor Hale" required /></label>
+          <div class="field-row">
+            <label class="field"><span>Date</span><input name="date" type="date" required /></label>
+            <label class="field"><span>Time</span>
+              <select name="time" required></select>
+            </label>
+          </div>
+          <div class="field-row">
+            <label class="field"><span>Guests</span>
+              <select name="guests"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+            </label>
+            <label class="field"><span>Seat</span>
+              <select name="seat"><option>By the window</option><option>At the counter</option><option>Anywhere warm</option></select>
+            </label>
+          </div>
+          <button class="button" type="submit" data-magnetic><span>Hold my table</span></button>
+          <p class="reserve__status" data-reserve-status role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="visit" id="visit" data-tone="light" aria-labelledby="visit-title">
+        <div class="visit__text">
+          <p class="label">Visit</p>
+          <h2 class="visit__title" id="visit-title" data-rise>Find the<br /><em>warm window.</em></h2>
+          <p class="visit__status" data-open-status></p>
+          <address>14 Larkspur Row<br />London<br />W1 7MR</address>
+          <table class="visit__hours" data-hours>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="visit__map" aria-hidden="true">
+          <svg viewBox="0 0 600 520" data-map>
+            <g class="map__blocks">
+              <path d="M20 40h170v120H20zM230 40h150v120H230zM420 40h160v120H420zM20 200h170v130H20zM420 200h160v130H420zM20 370h170v120H20zM230 370h150v120H230zM420 370h160v120H420z" />
+            </g>
+            <g class="map__streets">
+              <path d="M0 180h600M0 350h600M210 0v520M400 0v520" />
+            </g>
+            <path class="map__route" d="M60 520V350h150v-170h190" />
+            <g class="map__pin" transform="translate(400 180)">
+              <circle r="34" class="map__pulse" />
+              <circle r="9" />
+            </g>
+            <text x="420" y="171" class="map__label">Morrow</text>
+            <text x="16" y="345" class="map__street">Larkspur Row</text>
+            <text x="216" y="510" class="map__street map__street--v">Ashdown Street</text>
+          </svg>
+        </div>
+      </section>
+
+      <section class="close" id="trizen" data-tone="light" aria-label="Built by Trizen">
+        <div class="close__media">
+          <img src="media/stills/m1-exterior.webp" srcset="media/stills/m1-exterior-sm.webp 900w, media/stills/m1-exterior.webp 1536w" sizes="100vw" alt="Morrow's shopfront glowing on a rainy London corner" width="1536" height="1024" loading="lazy" data-parallax="10" />
+          <canvas class="close__rain" data-close-rain aria-hidden="true"></canvas>
+        </div>
+        <p class="close__line" data-rise>Until the <em>morrow.</em></p>
+        <div class="close__invite">
+          <p class="close__mark" data-fade><span>TRIZEN</span><span class="label">A concept by Trizen Technologies</span></p>
+          <h2 class="close__title" data-rise>Imagine this<br />for your <em>café.</em></h2>
+          <div data-fade>
+            <a class="button button--light" href="https://www.trizentechnologies.com/contact" target="_blank" rel="noopener" data-magnetic>
+              <span>Built by Trizen
+                <svg viewBox="0 0 24 12" width="24" height="12" fill="none" stroke="currentColor" aria-hidden="true"><path d="M0 6h23M17.5.5 23 6l-5.5 5.5" /></svg>
+              </span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" data-tone="light">
+      <div class="footer__top">
+        <p class="footer__line">Coffee, bakes<br /><em>&amp; kind company.</em></p>
+        <nav class="footer__links" aria-label="Footer">
+          <div><p class="label">Morrow</p><a href="#menu" data-go>Menu</a><a href="#room" data-go>The Room</a><a href="#reserve" data-go>Reservations</a></div>
+          <div><p class="label">Open</p><span>Mon–Fri 7am–11pm</span><span>Sat–Sun 8am–11pm</span></div>
+          <div><p class="label">Trizen</p><a href="https://trizentechnologies.com" target="_blank" rel="noopener">Built by Trizen</a><a href="https://www.trizentechnologies.com/contact" target="_blank" rel="noopener">Contact</a></div>
+        </nav>
+      </div>
+      <p class="footer__word" data-footer-word aria-hidden="true">MORROW</p>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Morrow</span>
+        <span>A fictional café, created as a concept by Trizen Technologies.</span>
+        <a href="#top" data-home>Back to the start</a>
+      </div>
+    </footer>
+
+    <div class="cursor" data-cursor aria-hidden="true"><span data-cursor-label></span></div>
+    <div class="toast" data-toast role="status" aria-live="polite"></div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
