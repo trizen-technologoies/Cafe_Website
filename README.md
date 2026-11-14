@@ -41,19 +41,24 @@ How far you scroll for each second of film and at each stop is set at the top of
 
 ## Changing media
 
-Replace a file in `media/flow` or `media/concept`, then run `npm run media`. This needs ffmpeg, and Python with numpy. It takes about fifteen minutes. It:
+Replace a file in `media/flow` or `media/concept`, then run `npm run media`. This needs ffmpeg, and Python with numpy, Pillow, scipy and scikit-image. It takes about twenty minutes. It:
 
 - removes the Veo watermark
-- joins the clips into one film, with the cloud, the door's light and short dissolves between shots
+- cuts the clips into one film, rendered frame by frame:
+  - the first aerial shot is left inside the cloud and the second comes out of it, so the descent happens once
+  - holds where a clip slowed to a stop are trimmed
+  - shots hand over with morph dissolves: the outgoing shot is zoomed and shifted to sit on the incoming one, then optical flow slides any remaining differences (a turned head, a table seen from a little higher) into place as they blend, so nothing ever shows twice
+  - the camera pushes into the open doorway as warm light fills the lens, and comes out of it inside
 - uses only the part of the door clip without the hand
 - paints out the second shop sign that appears in C3
-- matches the colour of the door shots to the street
+- grades the door clips to the same blue-hour colour as the street
 - writes the film forwards and reversed in two sizes, with `film.json` recording where each stop falls
 
-It rebuilds everything in `public/media` (the favicon sits outside it), so never edit that folder by hand.
+It rebuilds everything in `public/media` (the favicon sits outside it), so never edit that folder by hand. To check a change to the edit quickly, `python scripts/prepare_media.py --preview <folder>` renders the film at half size in about five minutes, without publishing anything.
 
 Some things are measured from particular frames and need updating if those clips change:
 
+- where each clip is cut, and the alignments between neighbouring shots: the edit section at the top of `scripts/prepare_media.py`
 - the second sign's position over time: `SECOND_SIGN` in `scripts/prepare_media.py`
 - the book's pages: `BOOK_PAGES` in `src/hero/hero.js`
 - the menu on the table: `ON_TABLE` in `src/hero/card.js`

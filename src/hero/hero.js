@@ -107,11 +107,10 @@ export class Hero {
       at += part.length;
     };
     const s = this.seconds;
-    // A stretch of film between two different shots that should be passed through quickly,
-    // never rested on: the street dissolving into the walk to the door (frames 15 to 31 after
-    // the shopfront stop, as built by scripts/prepare_media.py).
+    // Stretches of film that should be passed through quickly, never rested on, listed as
+    // [first, last] frames in film.json by scripts/prepare_media.py (none at present).
     const fps = this.plan.fps;
-    const quick = [[s[2] + 14 / fps, s[2] + 32 / fps]];
+    const quick = (this.plan.quick || []).map(([a, b]) => [a / fps, b / fps]);
     const addFilm = (index, from, to) => {
       let at = from;
       for (const [a, b] of quick) {
@@ -209,8 +208,9 @@ export class Hero {
 
     this.rain.level = reducedMotion ? 0 : curve(this.rainCurve, time);
     this.motes.level = reducedMotion ? 0 : time > this.lightTime ? curve(this.moteCurve, time) : 0;
-    this.mist.set(reducedMotion ? 0 : Math.min(1, bell(time, this.cloudTime, 0.75) * 1.15) * 0.75);
-    this.flare.set(reducedMotion ? 0 : bell(time, this.lightTime, 0.55));
+    // The film carries its own cloud and light; these layers only add a little depth over them.
+    this.mist.set(reducedMotion ? 0 : bell(time, this.cloudTime, 0.9) * 0.4);
+    this.flare.set(reducedMotion ? 0 : bell(time, this.lightTime, 0.5) * 0.45);
 
     // The page turn and the menu card follow the scroll exactly.
     const turning = part.kind === 'turn' ? q : before('turn') ? 0 : 1;
