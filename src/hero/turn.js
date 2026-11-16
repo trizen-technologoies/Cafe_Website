@@ -10,8 +10,12 @@ export class PageTurn {
     this.book = bookSrc;
     this.next = nextSrc;
     this.parts = null;
-    // Fetch both pictures early so the first turn never waits on them.
-    for (const src of [bookSrc, nextSrc]) new Image().src = src;
+    // Fetch and decode both pictures early so the first turn never waits on them.
+    for (const src of [bookSrc, nextSrc]) {
+      const image = new Image();
+      image.src = src;
+      image.decode?.().catch(() => {});
+    }
   }
 
   half(src, side, ink) {

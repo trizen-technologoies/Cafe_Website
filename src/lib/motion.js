@@ -41,11 +41,11 @@ export function scrollToTarget(target, { immediate = false, duration = 1.6 } = {
 
 export const scrollY = () => (lenis ? lenis.scroll : window.scrollY);
 
-/** Sizes one line of text so it fills `width` pixels exactly. */
-export function fitText(element, width) {
+/** Sizes one line of text so it fills `width` pixels exactly, but no larger than `maxSize` pixels. */
+export function fitText(element, width, maxSize = Infinity) {
   element.style.fontSize = '100px';
   const measured = element.getBoundingClientRect().width;
-  element.style.fontSize = `${(100 * width) / measured}px`;
+  element.style.fontSize = `${Math.min((100 * width) / measured, maxSize)}px`;
 }
 
 export function fontsReady(limit = 2500) {

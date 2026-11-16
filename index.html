@@ -45,8 +45,8 @@
 
           <canvas class="fx fx--rain" data-rain aria-hidden="true"></canvas>
           <canvas class="fx fx--motes" data-motes aria-hidden="true"></canvas>
-          <div class="fx fx--mist" data-mist aria-hidden="true"><i></i><i></i><b></b></div>
-          <div class="fx fx--flare" data-flare aria-hidden="true"><i></i><b></b></div>
+          <div class="fx fx--mist" data-mist aria-hidden="true"><i></i><i></i></div>
+          <div class="fx fx--flare" data-flare aria-hidden="true"><i></i></div>
           <div class="fx fx--shade" data-shade aria-hidden="true"></div>
           <div class="fx fx--vignette" aria-hidden="true"></div>
 
@@ -97,8 +97,6 @@
           </div>
 
           <div class="hero__ui">
-            <div class="hero__count" aria-hidden="true"><span data-count>01</span><i></i><span data-total>09</span></div>
-            <button class="hero__cue" type="button" data-next><span>Scroll</span><i></i></button>
             <button class="hero__skip" type="button" data-skip-hero>Skip to the menu</button>
           </div>
         </div>
@@ -106,7 +104,7 @@
 
       <section class="menu" id="menu" data-tone="dark" aria-labelledby="menu-title">
         <div class="menu__head">
-          <p class="label">The menu</p>
+          <p class="folio" data-fade><span class="folio__no">Nº 02</span><span>The menu</span><span class="folio__aside" data-edition>Today</span></p>
           <h2 class="menu__title" id="menu-title" data-rise>Small plates,<br /><em>long evenings.</em></h2>
           <p class="menu__intro" data-fade>Coffee roasted four streets away, bakes from six each morning, and a few warm things to eat until late.</p>
         </div>
@@ -125,11 +123,14 @@
 
       <section class="room" id="room" data-tone="light" aria-labelledby="room-title">
         <div class="room__media" data-room-media>
-          <img src="media/stills/m2-interior.webp" srcset="media/stills/m2-interior-sm.webp 900w, media/stills/m2-interior.webp 1536w" sizes="100vw" alt="Inside Morrow in the evening: a marble counter, brass lamps and rain on the tall windows" width="1536" height="1024" loading="lazy" data-parallax="8" />
+          <img src="media/stills/m2-interior.webp" srcset="media/stills/m2-interior-sm.webp 900w, media/stills/m2-interior.webp 1536w" sizes="100vw" alt="Inside Morrow in the evening: a marble counter, brass lamps and rain on the tall windows" width="1536" height="1024" loading="lazy" decoding="async" data-parallax="8" />
+          <blockquote class="room__quote" data-fade>
+            <p>“Lamps that stay on<br /><em>until the last cup.”</em></p>
+          </blockquote>
         </div>
+        <p class="folio" data-fade><span class="folio__no">Nº 03</span><span>The room</span><span class="folio__aside">14 Larkspur Row, W1</span></p>
+        <h2 class="room__title" id="room-title" data-rise>Built for<br /><em>rainy evenings.</em></h2>
         <div class="room__text">
-          <p class="label" data-fade>The room</p>
-          <h2 class="room__title" id="room-title" data-rise>Built for<br /><em>rainy evenings.</em></h2>
           <p class="room__body" data-fade>One long marble counter, a dozen small tables, lamps that stay on until the last cup. We opened on this corner in 2014 with one machine and a borrowed oven, and we still bake everything here.</p>
           <dl class="room__facts" data-fade>
             <div><dt>Seats</dt><dd>48, and the window</dd></div>
@@ -138,19 +139,20 @@
           </dl>
         </div>
         <figure class="room__detail" data-fade>
-          <img src="media/stills/m3-detail.webp" srcset="media/stills/m3-detail-sm.webp 900w, media/stills/m3-detail.webp 1536w" sizes="(min-width: 900px) 34vw, 80vw" alt="A flat white and a cardamom bun on a marble table beside a rainy window" width="1536" height="1024" loading="lazy" />
-          <figcaption>Flat white and a cardamom bun, £7.40</figcaption>
+          <img src="media/stills/m3-detail.webp" srcset="media/stills/m3-detail-sm.webp 900w, media/stills/m3-detail.webp 1536w" sizes="(min-width: 900px) 40vw, 80vw" alt="A flat white and a cardamom bun on a marble table beside a rainy window" width="1536" height="1024" loading="lazy" decoding="async" />
+          <figcaption><span>Fig. 1</span>Flat white and a cardamom bun, £7.40</figcaption>
         </figure>
       </section>
 
       <section class="reserve" id="reserve" data-tone="dark" aria-labelledby="reserve-title">
+        <p class="folio" data-fade><span class="folio__no">Nº 04</span><span>Reservations</span><span class="folio__aside">Tables held for fifteen minutes</span></p>
         <div class="reserve__book" data-reserve-book>
-          <img src="media/stills/07-book.webp" srcset="media/stills/07-book-sm.webp 900w, media/stills/07-book.webp 1536w" sizes="(min-width: 900px) 56vw, 100vw" alt="The host's hands rest on Morrow's open reservation book" width="1536" height="1024" loading="lazy" />
+          <img src="media/stills/07-book.webp" srcset="media/stills/07-book-sm.webp 900w, media/stills/07-book.webp 1536w" sizes="(min-width: 900px) 56vw, 100vw" alt="The host's hands rest on Morrow's open reservation book" width="1536" height="1024" loading="lazy" decoding="async" />
           <div class="ink" data-reserve-ink></div>
         </div>
         <form class="reserve__form" data-reserve-form novalidate>
-          <p class="label">Reservations</p>
-          <h2 class="reserve__title" id="reserve-title" data-rise>We'll write<br /><em>you in.</em></h2>
+          <h2 class="reserve__title" id="reserve-title" data-rise>We’ll write<br /><em>you in.</em></h2>
+          <p class="reserve__intro">Tell us when, and the host will pencil you into the book.</p>
           <label class="field"><span>Your name</span><input name="name" autocomplete="name" placeholder="Eleanor Hale" required /></label>
           <div class="field-row">
             <label class="field"><span>Date</span><input name="date" type="date" required /></label>
@@ -172,8 +174,8 @@
       </section>
 
       <section class="visit" id="visit" data-tone="light" aria-labelledby="visit-title">
+        <p class="folio" data-fade><span class="folio__no">Nº 05</span><span>Visit</span><span class="folio__aside">Open seven days</span></p>
         <div class="visit__text">
-          <p class="label">Visit</p>
           <h2 class="visit__title" id="visit-title" data-rise>Find the<br /><em>warm window.</em></h2>
           <p class="visit__status" data-open-status></p>
           <address>14 Larkspur Row<br />London<br />W1 7MR</address>
@@ -203,7 +205,7 @@
 
       <section class="close" id="trizen" data-tone="light" aria-label="Built by Trizen">
         <div class="close__media">
-          <img src="media/stills/m1-exterior.webp" srcset="media/stills/m1-exterior-sm.webp 900w, media/stills/m1-exterior.webp 1536w" sizes="100vw" alt="Morrow's shopfront glowing on a rainy London corner" width="1536" height="1024" loading="lazy" data-parallax="10" />
+          <img src="media/stills/m1-exterior.webp" srcset="media/stills/m1-exterior-sm.webp 900w, media/stills/m1-exterior.webp 1536w" sizes="100vw" alt="Morrow's shopfront glowing on a rainy London corner" width="1536" height="1024" loading="lazy" decoding="async" data-parallax="10" />
           <canvas class="close__rain" data-close-rain aria-hidden="true"></canvas>
         </div>
         <p class="close__line" data-rise>Until the <em>morrow.</em></p>
@@ -238,7 +240,6 @@
       </div>
     </footer>
 
-    <div class="cursor" data-cursor aria-hidden="true"><span data-cursor-label></span></div>
     <div class="toast" data-toast role="status" aria-live="polite"></div>
 
     <script type="module" src="/src/main.js"></script>

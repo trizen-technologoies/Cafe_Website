@@ -1,5 +1,12 @@
 import { Rain } from '../hero/fx.js';
+import { longDate } from '../hero/ink.js';
 import { SplitText, ScrollTrigger, finePointer, fitText, gsap, reducedMotion, scrollToTarget } from '../lib/motion.js';
+
+/** Today's date in London, printed like a magazine's issue date. */
+export function initEdition() {
+  const { weekday, date } = longDate(new Date());
+  document.querySelectorAll('[data-edition]').forEach((element) => (element.textContent = `${weekday} ${date}`));
+}
 
 /** Links that lead somewhere on the page glide there. */
 export function initLinks() {
@@ -25,29 +32,15 @@ export function initNav() {
     });
   });
   ScrollTrigger.create({ trigger: '.hero', start: 'top top', end: 'bottom 40px', onToggle: ({ isActive }) => isActive && (nav.dataset.tone = 'light') });
-}
 
-export function initCursor() {
-  const cursor = document.querySelector('[data-cursor]');
-  if (!finePointer || reducedMotion) {
-    cursor.remove();
-    return;
-  }
-  const label = cursor.querySelector('[data-cursor-label]');
-  const moveX = gsap.quickTo(cursor, 'x', { duration: 0.35, ease: 'power3.out' });
-  const moveY = gsap.quickTo(cursor, 'y', { duration: 0.35, ease: 'power3.out' });
-  addEventListener('pointermove', (event) => {
-    moveX(event.clientX);
-    moveY(event.clientY);
-    const target = event.target instanceof Element ? event.target : null;
-    const hover = target?.closest('a, button, input, select, label, [data-cursor]');
-    const text = target?.closest('[data-cursor]')?.dataset.cursor || '';
-    cursor.classList.toggle('is-hover', Boolean(hover) && !text);
-    cursor.classList.toggle('has-label', Boolean(text));
-    label.textContent = text;
-    cursor.classList.add('is-on');
+  // Over the opening film the bar floats on a soft shade. Once the page begins it becomes a solid
+  // bar in the colour of the section beneath, so it is readable everywhere and always there.
+  ScrollTrigger.create({
+    trigger: '.hero',
+    start: 'bottom 40px',
+    onEnter: () => (nav.dataset.solid = 'true'),
+    onLeaveBack: () => (nav.dataset.solid = 'false'),
   });
-  document.addEventListener('pointerleave', () => cursor.classList.remove('is-on'));
 }
 
 export function initMagnetic() {
@@ -71,9 +64,9 @@ export function initMagnetic() {
 export function initReveals() {
   if (reducedMotion) return;
   document.querySelectorAll('main section:not(.hero) [data-rise], .footer [data-rise]').forEach((heading) => {
-    const lines = SplitText.create(heading, { type: 'lines', mask: 'lines' }).lines;
+    const lines = SplitText.create(heading, { type: 'lines', mask: 'lines', linesClass: 'line' }).lines;
     gsap.from(lines, {
-      yPercent: 110,
+      yPercent: 140,
       duration: 1.3,
       stagger: 0.1,
       ease: 'power4.out',
@@ -109,7 +102,9 @@ export function initReveals() {
 
 export function initFooter() {
   const word = document.querySelector('[data-footer-word]');
-  const fit = () => fitText(word, word.parentElement.clientWidth - 2 * parseFloat(getComputedStyle(word.parentElement).paddingLeft));
+  // Full width, unless that would make it taller than half the screen (a wide, short window).
+  const fit = () =>
+    fitText(word, word.parentElement.clientWidth - 2 * parseFloat(getComputedStyle(word.parentElement).paddingLeft), (innerHeight * 0.5) / 0.8);
   fit();
   addEventListener('resize', fit);
   if (reducedMotion) return;

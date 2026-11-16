@@ -49,6 +49,20 @@ export class Film {
     this.target = clamp(seconds, 0, Math.max(0, this.duration - 0.5 / this.fps));
   }
 
+  /**
+   * Goes straight to a moment a frame or two away instead of playing there. Used where the
+   * film cuts between shots behind an effect (the page turn), so the new shot is already on
+   * screen when the effect reveals it.
+   */
+  jumpTo(seconds) {
+    this.seek(seconds);
+    const video = this.active;
+    const gap = Math.abs(this.target - this.time);
+    if (this.busy || !this.duration || video.seeking || gap < 0.5 / this.fps || gap > 3 / this.fps) return;
+    video.pause();
+    video.currentTime = video === this.forward ? this.target : this.duration - this.target;
+  }
+
   /** How much of the forward film has downloaded, from 0 to 1. */
   progress() {
     const video = this.forward;

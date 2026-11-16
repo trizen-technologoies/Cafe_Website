@@ -12,13 +12,18 @@ export function initMenu(root) {
   let current = MENU[0].id;
 
   tabs.replaceChildren(
-    ...MENU.map((section) => {
+    ...MENU.map((section, index) => {
       const tab = document.createElement('button');
       tab.type = 'button';
       tab.role = 'tab';
       tab.className = 'menu__tab';
       tab.dataset.id = section.id;
       tab.textContent = section.title;
+      // Numbered like the contents page of a magazine.
+      const number = document.createElement('sup');
+      number.setAttribute('aria-hidden', 'true');
+      number.textContent = String(index + 1).padStart(2, '0');
+      tab.append(number);
       tab.addEventListener('click', () => show(section.id));
       return tab;
     }),
@@ -82,8 +87,17 @@ export function initMenu(root) {
     const swap = () => {
       render(section);
       mark();
-      if (!instant) gsap.from(list.children, { opacity: 0, y: 18, duration: 0.7, stagger: 0.05, ease: 'power3.out' });
+      // Clear the inline styles at the end so no row is ever left part-way through the fade.
+      if (!instant) {
+        gsap.fromTo(
+          list.children,
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.7, stagger: 0.05, ease: 'power3.out', clearProps: 'opacity,transform' },
+        );
+      }
     };
+    // A quick second click takes over from whatever the first one started.
+    gsap.killTweensOf(list.children);
     if (instant || !list.children.length) swap();
     else gsap.to(list.children, { opacity: 0, y: -10, duration: 0.25, stagger: 0.02, ease: 'power2.in', onComplete: swap });
   }

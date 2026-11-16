@@ -117,13 +117,16 @@ export class Motes extends CanvasEffect {
   }
 }
 
-/** Cloud drifting past the lens as the film passes through the cloud bank (0 to 1). */
+/**
+ * Cloud drifting past the lens as the film passes through the cloud bank (0 to 1). The texture
+ * is light on transparency (see light_only in scripts/prepare_media.py), so it brightens the film
+ * like a 'screen' blend without the cost of one.
+ */
 export class Mist {
   constructor(element) {
     this.element = element;
     this.layers = [...element.querySelectorAll('i')];
-    this.wash = element.querySelector('b');
-    for (const layer of [...this.layers, this.wash]) layer.style.backgroundImage = 'url(media/fx/cloud.webp)';
+    for (const layer of this.layers) layer.style.backgroundImage = 'url(media/fx/cloud-mist.webp)';
     this.level = -1;
     this.set(0);
   }
@@ -137,7 +140,6 @@ export class Mist {
     near.style.transform = `scale(${1 + level * 0.5}) translateX(${(1 - level) * 6}%)`;
     far.style.opacity = level * 0.85;
     far.style.transform = `scaleX(-1) scale(${1.2 + level * 0.6}) translateX(${(1 - level) * 8}%)`;
-    this.wash.style.opacity = Math.max(0, level - 0.55) / 0.45;
   }
 }
 
@@ -146,7 +148,6 @@ export class Flare {
   constructor(element) {
     this.element = element;
     this.glow = element.querySelector('i');
-    this.wash = element.querySelector('b');
     this.level = -1;
     this.set(0);
   }
@@ -157,7 +158,6 @@ export class Flare {
     this.element.style.visibility = level > 0.001 ? 'visible' : 'hidden';
     this.glow.style.opacity = level;
     this.glow.style.transform = `scale(${0.7 + level * 1.1})`;
-    this.wash.style.opacity = Math.max(0, level - 0.5) * 0.9;
   }
 }
 

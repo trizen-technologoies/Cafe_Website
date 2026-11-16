@@ -18,23 +18,32 @@ const TURN_LENGTH = 110;
 const CARD_LENGTH = 150;
 const END_LENGTH = 40;
 
-function greeting() {
+/** The part of the day in London, for the host's greeting. */
+function partOfDay() {
   const hour = londonHour();
-  if (hour < 12) return 'Good morning';
-  if (hour < 17) return 'Good afternoon';
-  return 'Good evening';
+  if (hour < 12) return 'morning';
+  if (hour < 17) return 'afternoon';
+  return 'evening';
 }
 
-// Words for each stop on the way in, from the sky to the table.
+// Words for each stop on the way in, from the sky to the table. Each is placed where it
+// leaves that shot's subject clear: the café's sign, the doors, the host's face, the book.
+// A portrait screen shows only the middle of the film, so some move again there.
 const COPY = [
-  { kicker: 'Morrow · London', title: 'Somewhere above<br /><em>the evening rain,</em>' },
-  { title: 'there’s a corner that<br /><em>glows a little warmer.</em>' },
+  { kicker: 'Morrow · London', title: 'Somewhere above<br /><em>the evening rain,</em>', size: 'cover' },
+  { title: 'there’s a corner that<br /><em>glows a little warmer.</em>', place: 'top' },
   { kicker: 'Since 2014', title: 'Coffee, bakes<br /><em>&amp; kind company.</em>' },
   { title: 'Come in out<br /><em>of the rain.</em>' },
-  { kicker: 'Welcome to Morrow', title: '<em>Mind</em> the step.' },
-  () => ({ kicker: 'We’ve been expecting you', title: `${greeting()}.`, place: 'top', size: 'small' }),
-  { kicker: 'The book', title: '<em>Ah,</em> there you are.', place: 'top' },
-  { title: 'Your table,<br /><em>by the window.</em>' },
+  { kicker: 'Welcome to Morrow', title: '<em>Mind</em> the step.', align: 'right' },
+  () => ({
+    kicker: 'We’ve been expecting you',
+    title: `Good<br /><em>${partOfDay()}.</em>`,
+    place: 'top',
+    size: 'small',
+    portrait: { place: 'bottom' },
+  }),
+  { kicker: 'The book', title: '<em>Ah,</em> there you are.', place: 'top', align: 'center', size: 'small' },
+  { title: 'Your table,<br /><em>by the window.</em>', size: 'small', portrait: { place: 'top' } },
   null,
 ];
 
@@ -62,7 +71,6 @@ export class Hero {
     this.frame = root.querySelector('[data-frame]');
     this.poster = root.querySelector('[data-poster]');
     this.copy = root.querySelector('[data-copy]');
-    this.count = root.querySelector('[data-count]');
     this.inkLayer = root.querySelector('[data-ink]');
     const stage = root.querySelector('[data-stage]');
     this.film = new Film(root.querySelector('[data-videos]'), plan.fps);
@@ -76,21 +84,22 @@ export class Hero {
     this.turn = new PageTurn(root.querySelector('[data-turn]'), `media/hero/rest-6${size}.webp`, `media/hero/turn-next${size}.webp`);
     this.card = new MenuCard(root.querySelector('[data-card]'), this.frame, root.querySelector('[data-shade]'));
 
-    this.seconds = plan.stops.map((frame) => frame / plan.fps);
-    this.turnTime = plan.turn / plan.fps;
+    // Aim at the middle of each frame: a paused video shows whichever frame its time falls in,
+    // so aiming at a frame's first instant can leave the frame before it on screen.
+    const middle = (frame) => (frame + 0.5) / plan.fps;
+    this.seconds = plan.stops.map(middle);
+    this.turnTime = middle(plan.turn);
     this.cloudTime = plan.joins.cloud / plan.fps;
     this.lightTime = plan.joins.light / plan.fps;
     this.track = this.buildTrack();
     this.length = this.track.at(-1).end;
     root.style.setProperty('--hero-length', this.length);
-    root.querySelector('[data-total]').textContent = String(this.seconds.length).padStart(2, '0');
 
     const s = this.seconds;
     this.rainCurve = [[0, 0.35], [s[1], 0.5], [s[2], 0.75], [s[3], 0.9], [this.lightTime - 0.6, 0.6], [this.lightTime, 0]];
     this.moteCurve = [[this.lightTime, 0], [s[4], 0.5], [s[5], 0.8], [s[6], 0.6], [s[7], 0.8], [s[8], 0.4]];
 
     this.shown = -1;
-    this.stop = 0;
     this.started = false;
     gsap.set(this.frame, { scale: 1.03 });
     gsap.set(this.inkLayer, { opacity: 0 });
@@ -184,6 +193,9 @@ export class Hero {
       onRefresh: (self) => this.update(self.progress * this.length),
     });
     this.update(0);
+    // Get the menu card's one-off setup done while nothing is moving.
+    const idle = window.requestIdleCallback || ((job) => setTimeout(job, 1500));
+    idle(() => this.card.warm(), { timeout: 4000 });
   }
 
   /* ---------- Following the scroll ---------- */
@@ -203,7 +215,11 @@ export class Hero {
     else if (part.kind === 'card') time = this.seconds[8];
     else time = part.time;
 
+    // Between the book and the next shot the film cuts, hidden by the page turn: jump across
+    // the cut rather than play through it.
+    const acrossCut = part.kind === 'turn' || (part.kind === 'stop' && part.index === 6);
     if (reducedMotion) this.showPoster(part.index);
+    else if (acrossCut) this.film.jumpTo(time);
     else this.film.seek(time);
 
     this.rain.level = reducedMotion ? 0 : curve(this.rainCurve, time);
@@ -222,14 +238,7 @@ export class Hero {
     this.card.set(card);
     this.root.classList.toggle('is-menu-open', card > 0.6);
 
-    // Words and handwriting arrive with each stop and leave once you move on.
-    let stop = part.index;
-    if (part.kind === 'film' && along > 0.5) stop = part.index + 1;
-    if (part.kind === 'turn' && q > 0.5) stop = 7;
-    if (stop !== this.stop) {
-      this.stop = stop;
-      this.count.textContent = String(stop + 1).padStart(2, '0');
-    }
+    // Words arrive with each stop and leave once you move on.
     let words = -1;
     if (part.kind === 'stop') words = part.index;
     else if (part.kind === 'film' && along < 0.25 && part.index !== 6) words = part.index;
@@ -240,9 +249,9 @@ export class Hero {
   setWords(index) {
     if (index === this.shown) return;
     this.shown = index;
-    const copy = COPY[index];
+    const copy = typeof COPY[index] === 'function' ? COPY[index]() : COPY[index];
     if (!copy) this.hideCopy();
-    else this.showCopy(typeof copy === 'function' ? copy() : copy);
+    else this.showCopy(innerWidth < innerHeight && copy.portrait ? { ...copy, ...copy.portrait } : copy);
   }
 
   /**
@@ -278,19 +287,21 @@ export class Hero {
     });
   }
 
-  showCopy({ kicker, title, place = 'bottom', size = 'large' }) {
+  showCopy({ kicker, title, place = 'bottom', align = 'left', size = 'large' }) {
     this.copyTween?.kill();
-    this.copy.dataset.place = place;
-    this.copy.dataset.size = size;
-    this.copy.innerHTML = `${kicker ? `<p class="label hero__kicker">${kicker}</p>` : ''}<h2 class="hero__title">${title}</h2>`;
+    Object.assign(this.copy.dataset, { place, align, size });
+    this.copy.innerHTML = `${kicker ? `<p class="hero__kicker"><i></i><span>${kicker}</span></p>` : ''}<h2 class="hero__title">${title}</h2>`;
     const heading = this.copy.querySelector('.hero__title');
-    const lines = SplitText.create(heading, { type: 'lines', mask: 'lines' }).lines;
-    gsap.set(this.copy, { autoAlpha: 1, y: 0 });
+    const lines = SplitText.create(heading, { type: 'lines', mask: 'lines', linesClass: 'line' }).lines;
+    // Centred words hang from the middle of the screen (GSAP owns this element's transform).
+    gsap.set(this.copy, { autoAlpha: 1, y: 0, xPercent: align === 'center' ? -50 : 0 });
     this.copyTween = gsap.timeline({ delay: 0.05 });
-    if (kicker) this.copyTween.from(this.copy.querySelector('.hero__kicker'), { opacity: 0, y: 10, duration: 0.8 }, 0);
-    this.copyTween
-      .from(lines, { yPercent: 110, duration: 1.1, stagger: 0.1, ease: 'power4.out' }, 0.05)
-      .fromTo(heading, { '--soft': 100 }, { '--soft': 0, duration: 2.2, ease: 'power2.out' }, 0);
+    if (kicker) {
+      this.copyTween
+        .from(this.copy.querySelector('.hero__kicker i'), { scaleX: 0, duration: 1.1, ease: 'power3.inOut' }, 0)
+        .from(this.copy.querySelector('.hero__kicker span'), { opacity: 0, x: -12, duration: 0.9 }, 0.3);
+    }
+    this.copyTween.from(lines, { yPercent: 140, duration: 1.2, stagger: 0.1, ease: 'power4.out' }, 0.05);
   }
 
   hideCopy() {
@@ -309,10 +320,6 @@ export class Hero {
   }
 
   bindUi() {
-    this.root.querySelector('[data-next]').addEventListener('click', () => {
-      const next = Math.min(this.stop + 1, this.seconds.length - 1);
-      scrollToTarget(this.scrollFor(next), { duration: 2.4 });
-    });
     this.root.querySelector('[data-skip-hero]').addEventListener('click', () => scrollToTarget('#menu', { duration: 2 }));
   }
 }

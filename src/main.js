@@ -1,5 +1,7 @@
-import '@fontsource-variable/fraunces/full.css';
-import '@fontsource-variable/fraunces/full-italic.css';
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource-variable/newsreader/opsz.css';
+import '@fontsource-variable/newsreader/opsz-italic.css';
 import '@fontsource-variable/inter-tight/wght.css';
 import '@fontsource/la-belle-aurore/400.css';
 import './styles/main.css';
@@ -10,7 +12,7 @@ import { ScrollTrigger, fontsReady, lockScroll, startSmoothScroll } from './lib/
 import { initMenu } from './sections/menu.js';
 import { initReserve } from './sections/reserve.js';
 import { initVisit } from './sections/visit.js';
-import { initClosingRain, initCursor, initFooter, initLinks, initMagnetic, initNav, initReveals } from './ui/ui.js';
+import { initClosingRain, initEdition, initFooter, initLinks, initMagnetic, initNav, initReveals } from './ui/ui.js';
 
 async function start() {
   scrollTo(0, 0);
@@ -23,12 +25,12 @@ async function start() {
   await fontsReady();
 
   filmGrain();
+  initEdition();
   initMenu(document.querySelector('#menu'));
   initReserve(document.querySelector('#reserve'));
   initVisit(document.querySelector('#visit'));
   initLinks();
   initNav();
-  initCursor();
   initMagnetic();
   initReveals();
   initFooter();

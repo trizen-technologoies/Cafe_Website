@@ -70,6 +70,18 @@ export class MenuCard {
     return timeline;
   }
 
+  /**
+   * Builds the card's animation once and throws it away. The first build pays a one-off setup
+   * cost (about a tenth of a second), and this moves it to a quiet moment instead of the middle
+   * of the scroll.
+   */
+  warm() {
+    if (this.timeline) return;
+    this.build().progress(0).kill();
+    gsap.set(this.root, { autoAlpha: 0 });
+    gsap.set(this.shade, { opacity: 0 });
+  }
+
   /** 0 is the blank menu on the table, 1 is the menu open in front of you. */
   set(progress) {
     this.progress = progress;

@@ -766,12 +766,26 @@ def build_hero(work, hero_dir):
     }, indent=2))
 
 
+def light_only(source, target, width, quality=60):
+    """Saves a picture as light on transparency: its brightest channel becomes the alpha. Laid over
+    the film with ordinary transparency it adds light just as a 'screen' blend would, but without a
+    blend mode, which would make the browser redraw everything beneath it on every frame of video."""
+    image = Image.open(source).convert("RGB")
+    image = image.resize((width, round(image.height * width / image.width)), Image.LANCZOS)
+    rgb = np.asarray(image).astype(np.float32) / 255
+    alpha = rgb.max(axis=2, keepdims=True)
+    colour = rgb / np.maximum(alpha, 1 / 255)
+    rgba = np.concatenate([colour, alpha], axis=2)
+    Image.fromarray((rgba * 255 + 0.5).astype(np.uint8), "RGBA").save(
+        target, "WEBP", quality=quality, alpha_quality=quality, method=6)
+
+
 def build_fx(fx_dir):
     # The thickest cloud in the descent becomes the mist that drifts past the lens.
     cloud = fx_dir / "cloud.png"
     ffmpeg("-ss", "2.4", "-i", FLOW / CLIPS["c1"], "-frames:v", 1,
            "-vf", f"{DELOGO},hue=s=0.55,eq=brightness=0.08:contrast=1.15,gblur=sigma=4", cloud)
-    still(cloud, fx_dir / "cloud.webp", 1600, 70)
+    light_only(cloud, fx_dir / "cloud-mist.webp", 1600)
     cloud.unlink()
 
 
