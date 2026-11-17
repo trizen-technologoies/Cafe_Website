@@ -12,7 +12,7 @@ import { ScrollTrigger, fontsReady, lockScroll, startSmoothScroll } from './lib/
 import { initMenu } from './sections/menu.js';
 import { initReserve } from './sections/reserve.js';
 import { initVisit } from './sections/visit.js';
-import { initClosingRain, initEdition, initFooter, initLinks, initMagnetic, initNav, initReveals } from './ui/ui.js';
+import { initClosingRain, initEdition, initFooter, initLinks, initMagnetic, initNav, initReveals, initSheet } from './ui/ui.js';
 
 async function start() {
   scrollTo(0, 0);
@@ -29,6 +29,7 @@ async function start() {
   initMenu(document.querySelector('#menu'));
   initReserve(document.querySelector('#reserve'));
   initVisit(document.querySelector('#visit'));
+  initSheet();
   initLinks();
   initNav();
   initMagnetic();

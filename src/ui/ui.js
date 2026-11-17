@@ -1,11 +1,53 @@
 import { Rain } from '../hero/fx.js';
 import { longDate } from '../hero/ink.js';
-import { SplitText, ScrollTrigger, finePointer, fitText, gsap, reducedMotion, scrollToTarget } from '../lib/motion.js';
+import { SplitText, ScrollTrigger, finePointer, fitText, gsap, lockScroll, reducedMotion, scrollToTarget } from '../lib/motion.js';
 
 /** Today's date in London, printed like a magazine's issue date. */
 export function initEdition() {
   const { weekday, date } = longDate(new Date());
   document.querySelectorAll('[data-edition]').forEach((element) => (element.textContent = `${weekday} ${date}`));
+}
+
+/**
+ * The phone menu: the button in the bar opens a full-screen contents page. Choosing a section
+ * (or the logo, or "Book a table") closes it, then the page glides there. Escape closes it too.
+ * Set up before initLinks, so the page is unlocked before the glide starts.
+ */
+export function initSheet() {
+  const nav = document.querySelector('[data-nav]');
+  const toggle = document.querySelector('[data-menu-toggle]');
+  const sheet = document.querySelector('[data-sheet]');
+  const label = toggle.querySelector('.visually-hidden');
+  const links = [...sheet.querySelectorAll('a')];
+  let open = false;
+
+  const set = (value) => {
+    if (value === open) return;
+    open = value;
+    toggle.setAttribute('aria-expanded', String(open));
+    label.textContent = open ? 'Close the menu' : 'Open the menu';
+    nav.dataset.open = String(open);
+    lockScroll(open);
+    gsap.killTweensOf([sheet, ...links]);
+    if (open) {
+      sheet.hidden = false;
+      gsap.fromTo(sheet, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35, ease: 'power2.out' });
+      gsap.fromTo(links, { yPercent: 35, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.7, stagger: 0.06, delay: 0.05, ease: 'power3.out' });
+      links[0].focus({ preventScroll: true });
+    } else {
+      gsap.to(sheet, { autoAlpha: 0, duration: 0.3, ease: 'power2.in', onComplete: () => (sheet.hidden = true) });
+    }
+  };
+
+  toggle.addEventListener('click', () => set(!open));
+  for (const link of [...links, ...nav.querySelectorAll('a')]) link.addEventListener('click', () => set(false));
+  addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || !open) return;
+    set(false);
+    toggle.focus();
+  });
+  // Turning a tablet or widening the window past the phone layout closes it.
+  matchMedia('(min-width: 901px)').addEventListener('change', (event) => event.matches && set(false));
 }
 
 /** Links that lead somewhere on the page glide there. */

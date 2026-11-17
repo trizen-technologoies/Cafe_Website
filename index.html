@@ -28,8 +28,24 @@
         <a href="#visit" data-go>Visit</a>
       </nav>
       <a class="nav__logo" href="#top" data-home aria-label="Morrow, back to the start">MORROW</a>
-      <a class="nav__book" href="#reserve" data-go data-magnetic><span>Book a table</span></a>
+      <div class="nav__end">
+        <a class="nav__book" href="#reserve" data-go data-magnetic><span>Book a table</span></a>
+        <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="sheet" data-menu-toggle>
+          <span class="visually-hidden">Open the menu</span><i></i><i></i>
+        </button>
+      </div>
     </header>
+
+    <!-- On phones, the sections listed like a magazine's contents page. -->
+    <div class="sheet" id="sheet" data-sheet hidden>
+      <nav class="sheet__links" aria-label="Sections">
+        <a href="#menu" data-go><span>02</span>The menu</a>
+        <a href="#room" data-go><span>03</span>The room</a>
+        <a href="#reserve" data-go><span>04</span>Reservations</a>
+        <a href="#visit" data-go><span>05</span>Visit</a>
+      </nav>
+      <p class="sheet__foot">14 Larkspur Row, London W1<br />Open every day until 11pm</p>
+    </div>
 
     <main id="main">
       <section class="hero" id="top" data-hero aria-label="Arriving at Morrow">
